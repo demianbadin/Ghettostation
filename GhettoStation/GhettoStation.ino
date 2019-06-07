@@ -61,7 +61,7 @@
 #include "GPS_UBLOX.cpp"
 #endif
 #ifdef PROTOCOL_SPORT
-#include "Frsky_sport.cpp"
+#include "frsky_sport.cpp"
 #endif
 
 /*
