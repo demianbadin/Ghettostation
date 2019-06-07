@@ -3,18 +3,18 @@
  ##################################################################################################################*/
  #define CONFIG_VERSION 1003 // Changing this will reset eeprom to default values
 //########## BOARD ################################################################################################
- #define TEENSYPLUS2 // Teensy++2 support. 
-//#define MEGA // Arduino Mega board
+//#define TEENSYPLUS2 // Teensy++2 support. 
+#define MEGA // Arduino Mega board
 
 //########## OPTIONS ###############################################################################################
 
 /* If you have communication problem at 56K , set this on. ( ie APM 2/2.5/2.6/AIO )
    Most Arduino have a +2.18% error at 57600 bd, Teensyduino has a -0.74% error. Booth cumulated are too much.
    Successfull com between Teensy & arduino requires 58824 bauds for Teensy.*/
-//#define BAUDRATE56K 57600
- #define BAUDRATE56K 58824 
+#define BAUDRATE56K 57600
+//#define BAUDRATE56K 58824 
  
- #define BARO_ALT // Use Baro for Altitude. Comment for using GPS altitude instead.
+//#define BARO_ALT // Use Baro for Altitude. Comment for using GPS altitude instead.
  
 //Use Mag+imu for heading or GPS heading if not set ( not used for tracker only osd relay )
  #define MAGHEADING 1
@@ -47,9 +47,9 @@
  // Minimum voltage for lipo alert
 //########### GROUND OSD TELEMETRY OUTPUT #########################################################################
 // Activate osd output (comment if not needed)
- #define OSD_OUTPUT 
+//#define OSD_OUTPUT 
 //OSD output baudrate ( send data as fast as possible to the osd, no need to have the same baudrate as input one. )
- #define OSD_BAUD 57600
+#define OSD_BAUD 57600
 //########### LCD ##################################################################################################
 //LCD model
 #define LCDLCM1602 // (adress: 0x27 or 0x20) HobbyKing IIC/I2C/TWI Serial 2004 20x4, LCM1602 IIC A0 A1 A2 & YwRobot Arduino LCM1602 IIC V1
@@ -67,14 +67,14 @@
 //. Those are just default values when not configured.
 // To prevent burning servo they boot starts at neutral for all values. Adjust them directly from the menu.
 
- #define PAN_MAXPWM 1500     //max pan servo pwm value
- #define PAN_MAXANGLE 90     //Max angle clockwise (on the right) relative to PAN_MAXPWM. 
- #define PAN_MINPWM 1500     //min pan servo pwm valuemin pan servo pwm value
- #define PAN_MINANGLE 90	    //Max angle counter clockwise (on the left) relative to PAN_MINPWM.
+ #define PAN_MAXPWM 2470     //max pan servo pwm value
+ #define PAN_MAXANGLE 180     //Max angle clockwise (on the right) relative to PAN_MAXPWM. 
+ #define PAN_MINPWM 570     //min pan servo pwm valuemin pan servo pwm value
+ #define PAN_MINANGLE 0	    //Max angle counter clockwise (on the left) relative to PAN_MINPWM.
 
- #define TILT_MAXPWM 1500    //max tilt pwm value 
- #define TILT_MAXANGLE 90    //max tilt angle considering 0° is facing toward.
- #define TILT_MINPWM 1500    //min tilt pwm value
+ #define TILT_MAXPWM 2460    //max tilt pwm value 
+ #define TILT_MAXANGLE 180    //max tilt angle considering 0° is facing toward.
+ #define TILT_MINPWM 625    //min tilt pwm value
  #define TILT_MINANGLE 0     //minimum tilt angle. Considering 0 is facing toward, a -10 value would means we can tilt 10° down.
 
 
@@ -108,5 +108,5 @@
 //################################################## DEBUG ##########################################################
 //#define DEBUG
 
-//###############################################END OF CONFIG#######################################################
 
+//###############################################END OF CONFIG#######################################################

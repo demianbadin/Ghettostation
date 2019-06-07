@@ -259,7 +259,7 @@ void gps_nmea_read() {
         {
          telemetry_ok = true;
          lastpacketreceived = millis();
-	 protocol = "NMEA"; 
+	       protocol = "NMEA"; 
          uav_satellites_visible = GPS_NMEA.NumSats;
          uav_fix_type = GPS_NMEA.Fix;
          if (uav_fix_type == 1) {
@@ -267,11 +267,11 @@ void gps_nmea_read() {
          }
          else 
              uav_fix_type == 1; // no fix
-	uav_lat = GPS_NMEA.Lattitude;
-	uav_lon = GPS_NMEA.Longitude;
-	uav_alt = round(GPS_NMEA.Altitude / 10.0f); //from mm to cm
-	uav_groundspeed = round(GPS_NMEA.Ground_Speed / 100.0f); // in m/s
-	uav_heading = round(GPS_NMEA.Ground_Course / 100.0f);  // in deg
+	           uav_lat = GPS_NMEA.Lattitude;
+             uav_lon = GPS_NMEA.Longitude;
+             uav_alt = round(GPS_NMEA.Altitude / 10.0f); //from mm to cm
+             uav_groundspeed = round(GPS_NMEA.Ground_Speed / 100.0f); // in m/s
+             uav_heading = round(GPS_NMEA.Ground_Course / 100.0f);  // in deg
         GPS_NMEA.NewData = 0;
         } 
   

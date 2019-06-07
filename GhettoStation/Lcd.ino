@@ -347,7 +347,10 @@ void lcddisp_telemetry() {
                         string_telemetry6.copy(currentline); break;
                     case 5:
                         //currentline = "UBLOX"; break;
-                        string_telemetry7.copy(currentline); break;                     
+                        string_telemetry7.copy(currentline); break;
+                    case 6:
+                        //currentline = "SPORT"; break;
+                        string_telemetry8.copy(currentline); break;                     
                      }
                      break;
             case 4:      

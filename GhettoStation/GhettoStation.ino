@@ -60,6 +60,9 @@
 #ifdef PROTOCOL_UBLOX
 #include "GPS_UBLOX.cpp"
 #endif
+#ifdef PROTOCOL_SPORT
+#include "Frsky_sport.cpp"
+#endif
 
 /*
  * BOF preprocessor bug prevent
@@ -549,7 +552,7 @@ void rightButtonReleaseEvents(Button &btn)
                 case 8:  configuration.tilt_minangle++; break;
                 case 9:  servoconf_tmp[3]++;            break;
                 case 10: configuration.tilt_maxangle++; break;
-                case 12: if (configuration.telemetry < 5) configuration.telemetry += 1;  break; 
+                case 12: if (configuration.telemetry < 6) configuration.telemetry += 1;  break; 
                 case 13: if (configuration.baudrate  < 7) configuration.baudrate += 1;   break; 
                 case 14: if (current_bank < 3) current_bank += 1; else current_bank = 0; break;  
                 case 15: if (configuration.osd_enabled == 0) configuration.osd_enabled = 1; else configuration.osd_enabled = 0;    break;
@@ -685,7 +688,9 @@ void configure_voltage_ratio(MenuItem* p_menu_item) {
 //######################################## TELEMETRY FUNCTIONS #############################################
 void init_serial() {
     Serial.begin(57600);
-    SerialPort1.begin(baudrates[configuration.baudrate]);
+    //SerialPort1.begin(baudrates[configuration.baudrate]);
+    Serial1.begin(57600);
+    
     #ifdef OSD_OUTPUT
     SerialPort2.begin(OSD_BAUD);
     #endif
@@ -783,6 +788,11 @@ void get_telemetry() {
 #if defined (PROTOCOL_UBLOX)
    if (configuration.telemetry==5) {
        gps_ublox_read();      
+   }
+#endif
+#if defined (PROTOCOL_SPORT)
+   if (configuration.telemetry==6) {
+       sport_read();      
    }
 #endif
 }
@@ -1103,8 +1113,3 @@ void debug() {
        Serial.println(ltm_armfsmode);
 }
 #endif
-
-
-
-
-

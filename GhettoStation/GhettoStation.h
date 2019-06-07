@@ -5,6 +5,7 @@
 #define PROTOCOL_MAVLINK                        // Mavlink for Ardupilot / Autoquad / PixHawk / Taulabs (UAVOmavlinkBridge)
 #define PROTOCOL_NMEA                           //GPS NMEA ASCII protocol
 #define PROTOCOL_UBLOX                          //GPS UBLOX binary protocol
+#define PROTOCOL_SPORT                          //Frsky Sport protocol (INAV)
 #define COMPASS                                 //Keep it enabled even if unused
 /* ######################################## HAL ####################################################*/
 #ifdef TEENSYPLUS2
@@ -112,7 +113,7 @@ long baudrates[8]= {1200, 2400, 4800, 9600, 19200, 38400, BAUDRATE56K, 115200};
 
 FLASH_STRING(string_load1,      "  [GHETTOSTATION]   ");
 FLASH_STRING(string_load2,      "                    ");
-FLASH_STRING(string_load3,      "Rev 1.1.0-dev   ");
+FLASH_STRING(string_load3,      "Rev 2.1.0-dev   ");
 FLASH_STRING(string_shome1,     "  Waiting for Data  ");
 FLASH_STRING(string_shome2,     "   No GPS 3D FIX    ");
 FLASH_STRING(string_shome3,     "3D FIX! Alt:");
@@ -135,7 +136,8 @@ FLASH_STRING(string_telemetry3, "<<    MULTIWII    >>");
 FLASH_STRING(string_telemetry4, "<< LIGHTTELEMETRY >>");
 FLASH_STRING(string_telemetry5, "<<     MAVLINK    >>");
 FLASH_STRING(string_telemetry6, "<<      NMEA      >>");
-FLASH_STRING(string_telemetry7, "<<      UBLOX       ");
+FLASH_STRING(string_telemetry7, "<<      UBLOX     >>");
+FLASH_STRING(string_telemetry8, "<<      SPORT       ");
 
 FLASH_STRING(string_baudrate,   "  SELECT BAUDRATE:  ");
 FLASH_STRING(string_baudrate0,  "        1200      >>");
@@ -310,5 +312,3 @@ void clear_eeprom() {
         }
         sei();       
 }
-
-
