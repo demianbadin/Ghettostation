@@ -72,9 +72,9 @@
  #define PAN_MINPWM 570     //min pan servo pwm valuemin pan servo pwm value
  #define PAN_MINANGLE 0	    //Max angle counter clockwise (on the left) relative to PAN_MINPWM.
 
- #define TILT_MAXPWM 2460    //max tilt pwm value 
+ #define TILT_MAXPWM 625     //max tilt pwm value 
  #define TILT_MAXANGLE 180    //max tilt angle considering 0° is facing toward.
- #define TILT_MINPWM 625    //min tilt pwm value
+ #define TILT_MINPWM 2450    //min tilt pwm value
  #define TILT_MINANGLE 0     //minimum tilt angle. Considering 0 is facing toward, a -10 value would means we can tilt 10° down.
 
 

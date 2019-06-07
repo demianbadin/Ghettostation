@@ -302,7 +302,7 @@ int sport_read(void) {
 
   uav_lat = getTargetLat()*100;
   uav_lon = getTargetLon()*100;
-  uav_alt = getTargetAlt();
+  uav_alt = (int32_t) getTargetAlt();
   uav_satellites_visible = getSats();
   uav_fix_type = getFix();
 }
