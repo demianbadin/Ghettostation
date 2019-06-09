@@ -3,11 +3,10 @@
  ##################################################################################################################*/
  #define CONFIG_VERSION 1003 // Changing this will reset eeprom to default values
 //########## BOARD ################################################################################################
+//#define UNO // Arduino UNO 
 #define MEGA // Arduino Mega board
 
 //########## OPTIONS ###############################################################################################
-
-#define BAUDRATE56K 57600
  
 //#define BARO_ALT // Use Baro for Altitude. Comment for using GPS altitude instead.
  
@@ -67,15 +66,27 @@
  #define PAN_MINPWM 570     //min pan servo pwm valuemin pan servo pwm value
  #define PAN_MINANGLE 0	    //Max angle counter clockwise (on the left) relative to PAN_MINPWM.
 
- #define TILT_MAXPWM 625     //max tilt pwm value 
+ #define TILT_MAXPWM 2460    //max tilt pwm value 
  #define TILT_MAXANGLE 180    //max tilt angle considering 0° is facing toward.
- #define TILT_MINPWM 2450    //min tilt pwm value
+ #define TILT_MINPWM 625    //min tilt pwm value
  #define TILT_MINANGLE 0     //minimum tilt angle. Considering 0 is facing toward, a -10 value would means we can tilt 10° down.
 
 
 
 //########################################### BOARDS PINOUTS #########################################################
 //DON'T EDIT THIS IF YOU DON'T KNOW WHAT YOU'RE DOINGG
+//pinout for UNO
+#ifdef UNO
+  #define PAN_SERVOPIN      6    //PWM Pin for pan servo 
+  #define TILT_SERVOPIN     5 	 //PWM Pin for tilt servo 
+  #define LEFT_BUTTON_PIN   4    //Any Digital pin
+  #define RIGHT_BUTTON_PIN  3    //Any Digital pin
+  #define ENTER_BUTTON_PIN  2    //Any Digital pin
+  #define SOFTSERIAL_TX     11    //Digital pin used by SoftSerial for sending data to ground osd.
+  #define SOFTSERIAL_RX     10    //Digital pin used by SoftSerial for receiving data from ground osd. ( unused yet )
+  #define ADC_VOLTAGE      A0    //(F0) ADC pin used for voltage reading
+  #define BUZZER_PIN        9    //(C6) Any PWM pin (add a 100-150 ohm resistor between buzzer & ground)
+#endif
 
 //pinout for Arduino Mega 1280/2560
 #ifdef MEGA
@@ -85,7 +96,7 @@
   #define RIGHT_BUTTON_PIN 34   //Any Digital pin
   #define ENTER_BUTTON_PIN 36   //Any Digital pin
   #define ADC_VOLTAGE      41   //(A5) ADC pin used for voltage reading
-  #define BUZZER_PIN       46   //Any PWM pin ((add a 100-150 ohm resistor between buzzer & ground)
+  #define BUZZER_PIN        8   //(PH5) Any PWM pin ((add a 100-150 ohm resistor between buzzer & ground)
 #endif
 
 //################################################## DEBUG ##########################################################

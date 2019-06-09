@@ -8,11 +8,13 @@
 #define PROTOCOL_SPORT                          //Frsky Sport protocol (INAV)
 #define COMPASS                                 //Keep it enabled even if unused
 /* ######################################## HAL ####################################################*/
+#ifdef UNO
+// This line defines a "Uart" object to access the serial port
+ SoftwareSerial SerialPort1(SOFTSERIAL_RX, SOFTSERIAL_TX); // RX, TX
+ HardwareSerial SerialDebug(Serial);
+#endif
 #ifdef MEGA
-HardwareSerial SerialPort1(Serial1);
- #ifdef OSD_OUTPUT
-  HardwareSerial SerialPort2(Serial2);
- #endif
+ HardwareSerial SerialPort1(Serial1);
  HardwareSerial SerialDebug(Serial);
 #endif
 
@@ -99,7 +101,7 @@ int servoconfprev_tmp[4];
 uint8_t test_servo_step = 1;
 uint16_t test_servo_cnt = 360;
 //baudrate selection
-long baudrates[8]= {1200, 2400, 4800, 9600, 19200, 38400, BAUDRATE56K, 115200};
+long baudrates[8]= {1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200};
 
 /*##################################### STRINGS STORED IN FLASH #############################################*/
 
@@ -160,17 +162,17 @@ Menu rootMenu("");
 MenuItem m1i1Item("START");
 MenuItem m1i2Item("SET HOME");
 Menu m1m3Menu("CONFIG");
-	Menu m1m3m1Menu("SERVOS");	
+  Menu m1m3m1Menu("SERVOS");  
             Menu m1m3m1m1Menu("PAN");
                 MenuItem m1m3m1m1l1Item("MINPWM");
                 MenuItem m1m3m1m1l2Item("MAXPWM");
                 MenuItem m1m3m1m1l3Item("MINANGLE");
-                MenuItem m1m3m1m1l4Item("MAXANGLE");			
-	    Menu m1m3m1m2Menu("TILT");
+                MenuItem m1m3m1m1l4Item("MAXANGLE");      
+      Menu m1m3m1m2Menu("TILT");
                 MenuItem m1m3m1m2l1Item("MINPWM");
                 MenuItem m1m3m1m2l2Item("MAXPWM");
                 MenuItem m1m3m1m2l3Item("MINANGLE");
-                MenuItem m1m3m1m2l4Item("MAXANGLE");			
+                MenuItem m1m3m1m2l4Item("MAXANGLE");      
             MenuItem m1m3m1i3Item("TEST");
         Menu m1m3m2Menu("TELEMETRY");
             MenuItem m1m3m2i1Item("PROTOCOL");
@@ -202,13 +204,13 @@ byte setBit(byte &Reg, byte whichBit, boolean stat) {
 
 float toRad(float angle) {
 // convert degrees to radians
-	angle = angle*0.01745329; // (angle/180)*pi
-	return angle;
+  angle = angle*0.01745329; // (angle/180)*pi
+  return angle;
 }
 
 float toDeg(float angle) {
 // convert radians to degrees.
-	angle = angle*57.29577951;   // (angle*180)/pi
+  angle = angle*57.29577951;   // (angle*180)/pi
         return angle;
 }
 
@@ -216,16 +218,16 @@ void attach_servo(PWMServo &s, int p, int min, int max) {
   
   
  // called at setup() or after a servo configuration change in the menu
-	if (!s.attached()) {
+  if (!s.attached()) {
             s.attach(p,min,max);
         }
 }
 
 void detach_servo(PWMServo &s) {
  // called at setup() or after a servo configuration change in the menu
-	if (s.attached()) {
-	    s.detach();
-	}
+  if (s.attached()) {
+      s.detach();
+  }
 }
 
 
@@ -282,25 +284,25 @@ void clear_eeprom() {
     cli();
     for (int i = 0; i < 1025; i++)          
         EEPROM.write(i, 0);
-	// eeprom is clear  we can write default config
+  // eeprom is clear  we can write default config
         //writing 4 setting banks.
         for (int j = 0; j < 4; j++) {          
-	    configuration.config_crc = CONFIG_VERSION;  // config version check
-	    configuration.pan_minpwm = PAN_MINPWM;
-	    configuration.pan_minangle = PAN_MINANGLE;
-	    configuration.pan_maxpwm = PAN_MAXPWM;
-	    configuration.pan_maxangle = PAN_MAXANGLE;
-	    configuration.tilt_minpwm = TILT_MINPWM;
-	    configuration.tilt_minangle = TILT_MINANGLE;
-	    configuration.tilt_maxpwm = TILT_MAXPWM;
+      configuration.config_crc = CONFIG_VERSION;  // config version check
+      configuration.pan_minpwm = PAN_MINPWM;
+      configuration.pan_minangle = PAN_MINANGLE;
+      configuration.pan_maxpwm = PAN_MAXPWM;
+      configuration.pan_maxangle = PAN_MAXANGLE;
+      configuration.tilt_minpwm = TILT_MINPWM;
+      configuration.tilt_minangle = TILT_MINANGLE;
+      configuration.tilt_maxpwm = TILT_MAXPWM;
             configuration.tilt_maxangle = TILT_MAXANGLE;
-	    configuration.baudrate = 6;
+      configuration.baudrate = 6;
             configuration.telemetry = 0;
             configuration.bearing = 0;
             configuration.osd_enabled = 0;
             configuration.bearing_method = 1;
             configuration.voltage_ratio = VOLTAGE_RATIO;  // ratio*10
-	    EEPROM_write(config_bank[j], configuration);
+      EEPROM_write(config_bank[j], configuration);
         }
         sei();       
 }

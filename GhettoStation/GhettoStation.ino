@@ -4,7 +4,7 @@
  * @file       GhettoStation.ino
  * @author     Guillaume S
  * @brief      Arduino based antenna tracker & telemetry display for UAV projects.
- * @project    https://github.com/demianbadin/Ghettostation
+ * @project    https://code.google.com/p/ghettostation/
  * 
  *             
  *             
@@ -24,6 +24,9 @@
 #endif
 #include <PWMServo.h>  
 
+#ifdef UNO
+#include <SoftwareSerial.h>
+#endif
 #include <Wire.h> 
 
 #include <Metro.h>
