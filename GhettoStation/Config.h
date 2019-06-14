@@ -34,7 +34,7 @@
  #define BANK4  "Bank 4"
  
  //GS Battery alarm
- #define MIN_VOLTAGE1 10.5f // First battery alarm level. Will emit 2 short tones every 10 sec.
+ #define MIN_VOLTAGE1 12.0f // First battery alarm level. Will emit 2 short tones every 10 sec.
  #define MIN_VOLTAGE2 10.0f // Second battery alarm level. Will emit 1 short + 1 long tone every 5 sec
  #define VOLTAGE_RATIO 600   // Default multiplier for battery voltage reading * 100. This can eb adjustd later from the menu.
  
@@ -91,12 +91,12 @@
 //pinout for Arduino Mega 1280/2560
 #ifdef MEGA
   #define PAN_SERVOPIN     11	//PWM Pin for pan servo
-  #define TILT_SERVOPIN    12   //PWM Pin for tilt ervo
+  #define TILT_SERVOPIN    12   //PWM Pin for tilt servo
   #define LEFT_BUTTON_PIN  32   //Any Digital pin
   #define RIGHT_BUTTON_PIN 34   //Any Digital pin
   #define ENTER_BUTTON_PIN 36   //Any Digital pin
-  #define ADC_VOLTAGE      41   //(A5) ADC pin used for voltage reading
-  #define BUZZER_PIN        8   //(PH5) Any PWM pin ((add a 100-150 ohm resistor between buzzer & ground)
+  #define ADC_VOLTAGE      A5   //(A5) ADC pin used for voltage reading
+  #define BUZZER_PIN       46   //(PH5) Any PWM pin ((add a 100-150 ohm resistor between buzzer & ground)
 #endif
 
 //################################################## DEBUG ##########################################################

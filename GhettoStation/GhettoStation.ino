@@ -180,7 +180,7 @@ void setup() {
 void loop() {
    
    if (loop1hz.check()) {
-        read_voltage();      
+        read_voltage();    
     }
   
     if (loop10hz.check() == 1) {
