@@ -63,11 +63,11 @@ void GPS_UBLOX_Class::Read(void)
   byte data;
   int numc;
   
-  numc = SerialPort1.available();
+  numc = Serial1.available();
   if (numc > 0)
     for (int i=0;i<numc;i++)  // Process bytes received
       {
-      data = SerialPort1.read();
+      data = Serial1.read();
       switch(UBX_step)     //Normally we start from zero. This is a state machine
       {
       case 0:  
@@ -98,7 +98,7 @@ void GPS_UBLOX_Class::Read(void)
 		if (UBX_payload_length_hi>=UBX_MAXPAYLOAD)
         {
 		  if (PrintErrors)
-			SerialDebug.println("ERR:GPS_BAD_PAYLOAD_LENGTH!!");          
+			Serial.println("ERR:GPS_BAD_PAYLOAD_LENGTH!!");          
           UBX_step=0;   //Bad data, so restart to step zero and try again.     
           ck_a=0;
           ck_b=0;
@@ -133,7 +133,7 @@ void GPS_UBLOX_Class::Read(void)
         else
 		  {
 		  if (PrintErrors)
-			SerialDebug.println("ERR:GPS_CHK!!");
+			Serial.println("ERR:GPS_CHK!!");
 		  }
         // Variable initialization
         UBX_step=0;
@@ -148,7 +148,7 @@ void GPS_UBLOX_Class::Read(void)
     {
 	Fix = 0;
 	if (PrintErrors)
-	  SerialDebug.println("ERR:GPS_TIMEOUT!!");
+	  Serial.println("ERR:GPS_TIMEOUT!!");
     }
 }
 

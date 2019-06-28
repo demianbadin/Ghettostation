@@ -7,34 +7,43 @@ void read_mavlink()
   mavlink_message_t msg;
   mavlink_status_t status;
 
-  while(SerialPort1.available())
+  while(Serial1.available())
   {
-    uint8_t c= SerialPort1.read();
+    uint8_t c= Serial1.read();
 
     //Get new message
     if(mavlink_parse_char(MAVLINK_COMM_0, c, &msg, &status))
     {
-            //mavlink_active = 1;
+
+    //mavlink_active = 1;
             telemetry_ok = true;
             protocol = "MAV";
             lastpacketreceived = millis();
-            Serial.println("MAVLINK RECIBIDO!!!");
             
     //Handle new message from autopilot
       switch(msg.msgid)
       {
-                
+
         case MAVLINK_MSG_ID_GPS_RAW_INT:
-          {
-            mavlink_gps_raw_int_t packet;
-            mavlink_msg_gps_raw_int_decode(&msg, &packet);
-            
-            //Serial.print("\nGPS Fix: ");Serial.println(packet.fix_type);
-            //Serial.print("GPS Latitude: ");Serial.println(packet.lat);
-            //Serial.print("GPS Longitude: ");Serial.println(packet.lon);
-            //Serial.print("GPS Speed: ");Serial.println(packet.vel);
-            //Serial.print("Sats Visible: ");Serial.println(packet.satellites_visible);
-    
+      {
+        mavlink_gps_raw_int_t packet;
+        mavlink_msg_gps_raw_int_decode(&msg, &packet);
+        
+        uav_fix_type = packet.fix_type;
+        uav_lat = packet.lat;
+        uav_lon = packet.lon;
+        uav_groundspeed = packet.vel;
+        uav_satellites_visible = packet.satellites_visible;
+        uav_alt = (packet.alt /10.0f); // from mm to cm
+       
+      }
+      break;
+
+      }
+    }
+  }
+
+/*    
             uav_lat =  mavlink_msg_gps_raw_int_get_lat(&msg) ;
             uav_lon =  mavlink_msg_gps_raw_int_get_lon(&msg);
             #ifndef BARO_ALT
@@ -43,24 +52,14 @@ void read_mavlink()
             uav_fix_type = (uint8_t) mavlink_msg_gps_raw_int_get_fix_type(&msg);
             uav_satellites_visible = (uint8_t) mavlink_msg_gps_raw_int_get_satellites_visible(&msg);
             uav_gpsheading = (int16_t) mavlink_msg_gps_raw_int_get_cog(&msg);
-          }
-      break;
-      
-      case MAVLINK_MSG_ID_VFR_HUD:
-                {
-                    uav_groundspeed = (uint16_t)round(mavlink_msg_vfr_hud_get_groundspeed(&msg));
-                    uav_airspeed = (uint8_t)round(mavlink_msg_vfr_hud_get_airspeed(&msg));
+            uav_groundspeed = (uint16_t)round(mavlink_msg_vfr_hud_get_groundspeed(&msg));
+            uav_airspeed = (uint8_t)round(mavlink_msg_vfr_hud_get_airspeed(&msg));
                   #ifdef BARO_ALT
                     uav_alt = (int32_t)round(mavlink_msg_vfr_hud_get_alt(&msg) * 100.0f);  // from m to cm
-                  #endif
-                }
-      }
-    }
-  }
-}
+                    */
 
+  }
 void request_mavlink_rates() {
-  Serial.println("MAVLINK PEDIDO...");
 //Request Data from Pixhawk
   uint8_t _system_id = 255; // id of computer which is sending the command (ground control software has id of 255)
   uint8_t _component_id = 2; // seems like it can be any # except the number of what Pixhawk sys_id is
@@ -99,6 +98,7 @@ void request_mavlink_rates() {
   mavlink_msg_request_data_stream_pack(_system_id, _component_id, &msg, _target_system, _target_component, _req_stream_id, _req_message_rate, _start_stop);
   uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);  // Send the message (.write sends as bytes)
 
-  SerialPort1.write(buf, len); //Write data to serial port
+  Serial1.write(buf, len); //Write data to serial port
+  //Serial.println("Mavlink pedido...");
 }
 #endif

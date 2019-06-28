@@ -44,8 +44,8 @@ void msp_read() {
   }
   c_state = IDLE;
 
-  while (SerialPort1.available()) {
-    c = SerialPort1.read();
+  while (Serial1.available()) {
+    c = Serial1.read();
 
     if (c_state == IDLE) {
       c_state = (c=='$') ? HEADER_START : IDLE;

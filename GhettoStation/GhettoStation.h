@@ -10,12 +10,7 @@
 /* ######################################## HAL ####################################################*/
 #ifdef UNO
 // This line defines a "Uart" object to access the serial port
- SoftwareSerial SerialPort1(SOFTSERIAL_RX, SOFTSERIAL_TX); // RX, TX
- HardwareSerial SerialDebug(Serial);
-#endif
-#ifdef MEGA
- HardwareSerial SerialPort1(Serial1);
- HardwareSerial SerialDebug(Serial);
+ SoftwareSerial Serial1(SOFTSERIAL_RX, SOFTSERIAL_TX); // RX, TX
 #endif
 
 int       softserial_delay = (int)round(10000000.0f/(OSD_BAUD)); // time to wait between each byte sent.
@@ -62,7 +57,7 @@ uint8_t      uav_flightmode = 19;            // Flight mode(0-19): 0: Manual, 1:
 
 char* protocol = "";
 long lastpacketreceived;
-static boolean      enable_frame_request = 0;
+static boolean      enable_frame_request = 1;
 
 
 //home 

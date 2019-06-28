@@ -65,10 +65,10 @@ void GPS_NMEA_Class::Read(void)
   char c;
   int numc;
   int i;
-	numc = SerialPort1.available();
+	numc = Serial1.available();
   if (numc > 0)
     for (i=0;i<numc;i++){
-	  c = SerialPort1.read();
+	  c = Serial1.read();
       if (c == '$'){                      // NMEA Start
         bufferidx = 0;
         buffer[bufferidx++] = c;
@@ -158,7 +158,7 @@ void GPS_NMEA_Class::parse_nmea_gps(void)
 	  else
 	    {
 		if (PrintErrors)
-	      SerialDebug.println("GPSERR: Checksum error!!");
+	      Serial.println("GPSERR: Checksum error!!");
 	    }
       }
     }
@@ -182,7 +182,7 @@ void GPS_NMEA_Class::parse_nmea_gps(void)
 	  else
 	    {
 		if (PrintErrors)
-	      SerialDebug.println("GPSERR: Checksum error!!");
+	      Serial.println("GPSERR: Checksum error!!");
 	    }
     }
   }
@@ -190,7 +190,7 @@ void GPS_NMEA_Class::parse_nmea_gps(void)
     {
 	bufferidx = 0;
 	if (PrintErrors)
-	  SerialDebug.println("GPSERR: Bad sentence!!");
+	  Serial.println("GPSERR: Bad sentence!!");
     }
 }
 

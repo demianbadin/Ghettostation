@@ -151,6 +151,7 @@ void setup() {
     init_lcdscreen();
          //start serial com 
     init_serial();
+    enable_frame_request = 1;
     
     // attach servos 
     attach_servo(pan_servo, PAN_SERVOPIN, configuration.pan_minpwm, configuration.pan_maxpwm);
@@ -688,8 +689,7 @@ void configure_voltage_ratio(MenuItem* p_menu_item) {
 //######################################## TELEMETRY FUNCTIONS #############################################
 void init_serial() {
     Serial.begin(57600);
-    SerialPort1.begin(baudrates[configuration.baudrate]);
-    //Serial1.begin(57600);
+    Serial1.begin(baudrates[configuration.baudrate]);
     
     #ifdef OSD_OUTPUT
     SerialPort2.begin(OSD_BAUD);

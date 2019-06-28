@@ -55,8 +55,8 @@ void ltm_read() {
   }
   c_state = IDLE;
   
-  while (SerialPort1.available()) {
-    c = char(SerialPort1.read());
+  while (Serial1.available()) {
+    c = char(Serial1.read());
 
     if (c_state == IDLE) {
       c_state = (c=='$') ? HEADER_START1 : IDLE;
