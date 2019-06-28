@@ -688,8 +688,8 @@ void configure_voltage_ratio(MenuItem* p_menu_item) {
 //######################################## TELEMETRY FUNCTIONS #############################################
 void init_serial() {
     Serial.begin(57600);
-    //SerialPort1.begin(baudrates[configuration.baudrate]);
-    Serial1.begin(57600);
+    SerialPort1.begin(baudrates[configuration.baudrate]);
+    //Serial1.begin(57600);
     
     #ifdef OSD_OUTPUT
     SerialPort2.begin(OSD_BAUD);

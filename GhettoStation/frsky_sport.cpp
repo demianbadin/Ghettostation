@@ -294,9 +294,9 @@ int sport_read(void) {
 */
   int incomingByte = 0;   // for incoming serial data
 
-  if (Serial1.available() > 0) {
+  if (SerialPort1.available() > 0) {
                 // read the incoming byte:
-                uint8_t c = char( Serial1.read());
+                uint8_t c = char( SerialPort1.read());
                 encodeTargetData(c);                
 }
 

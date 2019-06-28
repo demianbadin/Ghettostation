@@ -18,6 +18,7 @@ void read_mavlink()
             telemetry_ok = true;
             protocol = "MAV";
             lastpacketreceived = millis();
+            Serial.println("MAVLINK RECIBIDO!!!");
             
     //Handle new message from autopilot
       switch(msg.msgid)
@@ -59,6 +60,7 @@ void read_mavlink()
 }
 
 void request_mavlink_rates() {
+  Serial.println("MAVLINK PEDIDO...");
 //Request Data from Pixhawk
   uint8_t _system_id = 255; // id of computer which is sending the command (ground control software has id of 255)
   uint8_t _component_id = 2; // seems like it can be any # except the number of what Pixhawk sys_id is
