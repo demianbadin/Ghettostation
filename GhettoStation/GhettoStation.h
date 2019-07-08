@@ -11,6 +11,11 @@
 #ifdef UNO
 // This line defines a "Uart" object to access the serial port
  SoftwareSerial Serial1(SOFTSERIAL_RX, SOFTSERIAL_TX); // RX, TX
+ HardwareSerial Serial(Serial);
+#endif
+#ifdef MEGA
+// HardwareSerial SerialPort1(Serial1);
+// HardwareSerial SerialDebug(Serial);
 #endif
 
 int       softserial_delay = (int)round(10000000.0f/(OSD_BAUD)); // time to wait between each byte sent.

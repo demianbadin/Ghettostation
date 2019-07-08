@@ -20,7 +20,7 @@
 #include <avr/pgmspace.h>
 #include <Arduino.h>
 #ifdef DEBUG
-#include <MemoryFree.h>
+//#include <MemoryFree.h>
 #endif
 #include <PWMServo.h>  
 
@@ -181,7 +181,11 @@ void setup() {
 void loop() {
    
    if (loop1hz.check()) {
-        read_voltage();    
+        read_voltage();
+        //debug output to usb Serial
+        #if defined(DEBUG)
+        debug();
+        #endif    
     }
   
     if (loop10hz.check() == 1) {
@@ -197,10 +201,6 @@ void loop() {
         check_activity();
         //update lcd screen
         refresh_lcd();
-        //debug output to usb Serial
-        #if defined(DEBUG)
-        debug();
-        #endif
         switch (buzzer_status) {
             case 1:
                 playTones(1);
@@ -689,7 +689,8 @@ void configure_voltage_ratio(MenuItem* p_menu_item) {
 //######################################## TELEMETRY FUNCTIONS #############################################
 void init_serial() {
     Serial.begin(57600);
-    Serial1.begin(baudrates[configuration.baudrate]);
+    Serial1.begin(57600); //(baudrates[configuration.baudrate]);
+    //Serial1.begin(57600);
     
     #ifdef OSD_OUTPUT
     SerialPort2.begin(OSD_BAUD);
@@ -1058,9 +1059,10 @@ void playTones(uint8_t alertlevel) {
 
 #if defined(DEBUG)
 void debug() {
-       Serial.print("mem ");
-       int freememory = freeMem();
-       Serial.println(freememory);
+       //Serial.print("mem ");
+       //int freememory = freeMem();
+       //Serial.println(freememory);
+       Serial.prontln("############################### DEBUG ###############################");
        Serial.print("activ:");
        Serial.println(current_activity);
        Serial.print("conftelem:");
@@ -1075,7 +1077,7 @@ void debug() {
        Serial.println(uav_alt);
        Serial.print("rel_alt=");
        Serial.println(rel_alt);
-       Serial.print(uav_groundspeed);
+       Serial.print("vel=");
        Serial.println(uav_groundspeed);
        Serial.print("dst=");
        Serial.println(home_dist);
