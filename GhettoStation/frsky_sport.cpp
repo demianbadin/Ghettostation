@@ -1,3 +1,4 @@
+// https://github.com/SamuelBrucksch/open360tracker/blob/master/open360tracker/frsky_sport.cpp
 #ifdef PROTOCOL_SPORT
 
 void processFrskyPacket(uint8_t *packet);
@@ -194,15 +195,24 @@ void processSportPacket(uint8_t *packet)
       else if (appId >= GPS_COURS_FIRST_ID && appId <= GPS_COURS_LAST_ID) {
         //uint32_t course = SPORT_DATA_U32(packet)/100;
       }
-      #ifdef BARO_ALT
-        else if (appId >= BARO_ALT_FIRST_ID && appId <= BARO_ALT_LAST_ID) {
-          alt = SPORT_DATA_S32(packet); // altura en cm
+      //#ifdef BARO_ALT
+        else if (appId >= ALT_FIRST_ID && appId <= ALT_LAST_ID) {
+          //alt = SPORT_DATA_S32(packet); // altura en cm
+          Serial.print("BARO_ALT new Frsky = ");
+          Serial.println(SPORT_DATA_S32(packet));
+          //IF frskyData.hub.baroAltitude_bp >= 0 
+          //  alt = 100 * baroAltitude_bp + baroAltitude_ap;
+          //else
+          //  alt = 100 * baroAltitude_bp - baroAltitude_ap;
+          //endif;
         }
-      #else
+      //#else
         else if (appId >= GPS_ALT_FIRST_ID && appId <= GPS_ALT_LAST_ID) {
           alt = SPORT_DATA_S32(packet); // altura en cm
+          Serial.print("GPS_ALT new Frsky = ");
+          Serial.println(alt);
         }
-      #endif
+      //#endif
       else if (appId >= GPS_LONG_LATI_FIRST_ID && appId <= GPS_LONG_LATI_LAST_ID) {
         uint32_t gps_long_lati_data = SPORT_DATA_U32(packet);
         uint32_t gps_long_lati_b1w, gps_long_lati_a1w;
@@ -302,7 +312,7 @@ int sport_read(void) {
 
   uav_lat = getTargetLat()*100;
   uav_lon = getTargetLon()*100;
-  uav_alt = (int32_t) getTargetAlt();
+  uav_alt = getTargetAlt();
   uav_satellites_visible = getSats();
   uav_fix_type = getFix();
 }

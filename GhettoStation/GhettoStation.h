@@ -8,17 +8,10 @@
 #define PROTOCOL_SPORT                          //Frsky Sport protocol (INAV)
 #define COMPASS                                 //Keep it enabled even if unused
 /* ######################################## HAL ####################################################*/
-#ifdef UNO
-// This line defines a "Uart" object to access the serial port
- SoftwareSerial Serial1(SOFTSERIAL_RX, SOFTSERIAL_TX); // RX, TX
- HardwareSerial Serial(Serial);
-#endif
 #ifdef MEGA
 // HardwareSerial SerialPort1(Serial1);
 // HardwareSerial SerialDebug(Serial);
 #endif
-
-int       softserial_delay = (int)round(10000000.0f/(OSD_BAUD)); // time to wait between each byte sent.
 
 //pan/tilt servos 
  PWMServo pan_servo;
@@ -61,6 +54,7 @@ uint8_t      uav_flightmode = 19;            // Flight mode(0-19): 0: Manual, 1:
 //int16_t      uav_chan8_raw; 
 
 char* protocol = "";
+
 long lastpacketreceived;
 static boolean      enable_frame_request = 1;
 
@@ -147,9 +141,6 @@ FLASH_STRING(string_bank1,      BANK1);
 FLASH_STRING(string_bank2,      BANK2);
 FLASH_STRING(string_bank3,      BANK3);
 FLASH_STRING(string_bank4,      BANK4);
-FLASH_STRING(string_osd1,       "      ENABLE OSD    ");
-FLASH_STRING(string_osd2,       "<<       YES      >>");
-FLASH_STRING(string_osd3,       "<<       NO       >>");
 FLASH_STRING(string_bearing0,       "   BEARING METHOD   ");
 FLASH_STRING(string_bearing1,       "1: Put UAV 20m away ");
 FLASH_STRING(string_bearing2,       "2: Manual           ");
@@ -178,9 +169,8 @@ Menu m1m3Menu("CONFIG");
             MenuItem m1m3m2i1Item("PROTOCOL");
             MenuItem m1m3m2i2Item("BAUDRATE");        
         Menu m1m3m3Menu("OTHERS");
-            MenuItem m1m3m3i1Item("OSD");
-            MenuItem m1m3m3i2Item("BEARING METHOD");
-            MenuItem m1m3m3i3Item("BATTERY ALERT");
+            MenuItem m1m3m3i1Item("BEARING METHOD");
+            MenuItem m1m3m3i2Item("BATTERY ALERT");
 MenuItem m1i4Item("SWITCH SETTINGS");
 
 
@@ -272,7 +262,6 @@ struct config_t // 28 bytes
     int baudrate;
     int telemetry;
     int bearing;
-    uint8_t osd_enabled;
     uint8_t bearing_method;
     uint16_t voltage_ratio;
 } configuration;
@@ -299,7 +288,6 @@ void clear_eeprom() {
       configuration.baudrate = 6;
             configuration.telemetry = 0;
             configuration.bearing = 0;
-            configuration.osd_enabled = 0;
             configuration.bearing_method = 1;
             configuration.voltage_ratio = VOLTAGE_RATIO;  // ratio*10
       EEPROM_write(config_bank[j], configuration);

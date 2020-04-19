@@ -23,12 +23,7 @@
 //#include <MemoryFree.h>
 #endif
 #include <PWMServo.h>  
-
-#ifdef UNO
-#include <SoftwareSerial.h>
-#endif
 #include <Wire.h> 
-
 #include <Metro.h>
 #include <MenuSystem.h>
 #include <Button.h>
@@ -173,7 +168,7 @@ void setup() {
     compass.SetMeasurementMode(Measurement_Continuous); // Set the measurement mode to Continuous
 #endif
   
-    delay(2500);  // Wait until osd is initialised
+    delay(500);  // Wait until osd is initialised
 
 }
 
@@ -193,10 +188,6 @@ void loop() {
         enter_button.isPressed();
         left_button.isPressed();
         right_button.isPressed();
-        #ifdef OSD_OUTPUT
-        //pack & send LTM packets to SerialPort2 at 10hz.
-        ltm_write(); 
-        #endif
         //current activity loop
         check_activity();
         //update lcd screen
@@ -416,23 +407,15 @@ void check_activity() {
                 home_sent = 0;
                 current_activity=0;
             }
-            break;
-        case 15:                //Configure OSD
-            lcddisp_osd();
-            if (enter_button.holdTime() >= 700 && enter_button.held()) { //long press
-                EEPROM_write(config_bank[int(current_bank)], configuration);
-                home_sent = 0; // force resend an OFrame for osd update
-                current_activity=0;
-            }
-            break;      
-        case 16:                //Configure bearing method
+            break;  
+        case 15:                //Configure bearing method
             lcddisp_bearing_method();
             if (enter_button.holdTime() >= 700 && enter_button.held()) { //long press
                 EEPROM_write(config_bank[int(current_bank)], configuration);
                 current_activity=0;
             }
             break;
-        case 17:               //Configure voltage multiplier
+        case 16:               //Configure voltage multiplier
             lcddisp_voltage_ratio();
             if (enter_button.holdTime() >= 700 && enter_button.held()) { //long press
                 configuration.voltage_ratio = (uint16_t)(voltage_ratio * 100.0f);
@@ -513,9 +496,8 @@ void leftButtonReleaseEvents(Button &btn)
                   case 12:  if (configuration.telemetry > 0) configuration.telemetry -= 1;  break; 
                   case 13:  if (configuration.baudrate > 0)  configuration.baudrate -= 1;   break;
                   case 14:  if (current_bank > 0) current_bank -= 1; else current_bank = 3; break;
-                  case 15:  if (configuration.osd_enabled == 0) configuration.osd_enabled = 1; else configuration.osd_enabled = 0;    break;
-                  case 16:  if (configuration.bearing_method > 1) configuration.bearing_method -= 1; else configuration.bearing_method = 4; break;
-                  case 17:  if (voltage_ratio >= 1.0) voltage_ratio -= 0.01; break;
+                  case 15:  if (configuration.bearing_method > 1) configuration.bearing_method -= 1; else configuration.bearing_method = 4; break;
+                  case 16:  if (voltage_ratio >= 1.0) voltage_ratio -= 0.01; break;
              }                              
         }
         else if (current_activity==2) {
@@ -556,9 +538,8 @@ void rightButtonReleaseEvents(Button &btn)
                 case 12: if (configuration.telemetry < 6) configuration.telemetry += 1;  break; 
                 case 13: if (configuration.baudrate  < 7) configuration.baudrate += 1;   break; 
                 case 14: if (current_bank < 3) current_bank += 1; else current_bank = 0; break;  
-                case 15: if (configuration.osd_enabled == 0) configuration.osd_enabled = 1; else configuration.osd_enabled = 0;    break;
-                case 16: if (configuration.bearing_method < 5) configuration.bearing_method += 1; else configuration.bearing_method = 1; break;
-                case 17: voltage_ratio += 0.01; break;
+                case 15: if (configuration.bearing_method < 5) configuration.bearing_method += 1; else configuration.bearing_method = 1; break;
+                case 16: voltage_ratio += 0.01; break;
             }
         }
         else if (current_activity==2) {
@@ -603,11 +584,8 @@ void init_menu() {
             m1m3m2Menu.add_item(&m1m3m2i1Item, &configure_telemetry); // select telemetry protocol ( Teensy++2 only ) 
             m1m3m2Menu.add_item(&m1m3m2i2Item, &configure_baudrate); // select telemetry protocol
         m1m3Menu.add_menu(&m1m3m3Menu);  //Others        
-#ifdef OSD_OUTPUT
-            m1m3m3Menu.add_item(&m1m3m3i1Item, &configure_osd); // enable/disable osd
-#endif
-            m1m3m3Menu.add_item(&m1m3m3i2Item, &configure_bearing_method); // select tracker bearing reference method
-            m1m3m3Menu.add_item(&m1m3m3i3Item, &configure_voltage_ratio);    // set minimum voltage
+            m1m3m3Menu.add_item(&m1m3m3i1Item, &configure_bearing_method); // select tracker bearing reference method
+            m1m3m3Menu.add_item(&m1m3m3i2Item, &configure_voltage_ratio);    // set minimum voltage
         rootMenu.add_item(&m1i4Item, &screen_bank); //set home position
     displaymenu.set_root_menu(&rootMenu);
 }
@@ -672,32 +650,22 @@ void screen_bank(MenuItem* p_menu_item) {
     current_activity = 14;
 }
 
-#ifdef OSD_OUTPUT
-void configure_osd(MenuItem* p_menu_item) {
-    current_activity = 15;
-}
-#endif
-
 void configure_bearing_method(MenuItem* p_menu_item) {
-    current_activity = 16;
+    current_activity = 15;
 }
 
 void configure_voltage_ratio(MenuItem* p_menu_item) {
-    current_activity = 17;
+    current_activity = 16;
 }
 
 //######################################## TELEMETRY FUNCTIONS #############################################
 void init_serial() {
     Serial.begin(57600);
     Serial1.begin(57600); //(baudrates[configuration.baudrate]);
-    //Serial1.begin(57600);
     
-    #ifdef OSD_OUTPUT
-    SerialPort2.begin(OSD_BAUD);
-    #endif
-#ifdef DEBUG
-    Serial.println("Serial initialised"); 
-#endif
+  #ifdef DEBUG
+      Serial.println("Serial initialised"); 
+  #endif
 
 }
 
@@ -1062,7 +1030,7 @@ void debug() {
        //Serial.print("mem ");
        //int freememory = freeMem();
        //Serial.println(freememory);
-       Serial.prontln("############################### DEBUG ###############################");
+       Serial.println("############################### DEBUG ###############################");
        Serial.print("activ:");
        Serial.println(current_activity);
        Serial.print("conftelem:");

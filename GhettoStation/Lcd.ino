@@ -439,34 +439,6 @@ void lcddisp_bank() {
     }
 }
 
-void lcddisp_osd() {
-    for ( int i = 1 ; i<5; i++ ) {
-        char currentline[21]="";
-        char extract[21];
-        switch (i) {
-            case 1: 
-                string_osd1.copy(currentline);  break;
-            case 2:
-                strcpy(currentline, string_load2.copy(extract)); break;
-            case 3:
-                switch (configuration.osd_enabled) {          
-                    case 0:
-                        // NO
-                        string_osd3.copy(currentline);  break;
-                    case 1:
-                        //YES
-                        string_osd2.copy(currentline);  break;
-                }
-                break;   
-           case 4:      
-                    string_shome5.copy(currentline); break;
-           }
-        for ( int l = strlen(currentline); l<20 ; l++ ) {
-            strcat(currentline," ");
-        }
-       store_lcdline(i,currentline);
-    }
-}
 
 void lcddisp_bearing_method() {
     for ( int i = 1 ; i<5; i++ ) {
@@ -507,11 +479,11 @@ void lcddisp_bearing_method() {
 void lcddisp_voltage_ratio() {
     read_voltage();
     if (right_button.holdTime() >= 700 && right_button.isPressed() ) {
-              voltage_ratio += 0.1;
+              voltage_ratio += 10;
               delay(500);
         }
         else if ( left_button.holdTime() >= 700 && left_button.isPressed() ) {
-              voltage_ratio -= 0.1;
+              voltage_ratio -= 10;
               delay(500);
         }
     for ( int i = 1 ; i<5; i++ ) {
