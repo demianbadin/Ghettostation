@@ -2,9 +2,9 @@
  ******************************************************************************
  *
  * @file       GhettoStation.ino
- * @author     Guillaume S
+ * @author     
  * @brief      Arduino based antenna tracker & telemetry display for UAV projects.
- * @project    https://code.google.com/p/ghettostation/
+ * @project    github.com/demianbadin/Ghettostation/
  * 
  *             
  *             
@@ -15,8 +15,6 @@
 */
  
 #include "Config.h"
-
-
 #include <avr/pgmspace.h>
 #include <Arduino.h>
 #ifdef DEBUG
@@ -152,7 +150,6 @@ void setup() {
     attach_servo(pan_servo, PAN_SERVOPIN, configuration.pan_minpwm, configuration.pan_maxpwm);
     attach_servo(tilt_servo, TILT_SERVOPIN, configuration.tilt_minpwm, configuration.tilt_maxpwm); 
 
-        
     // move servo to neutral pan & DEFAULTELEVATION tilt at startup 
     servoPathfinder(0, DEFAULTELEVATION);
        
@@ -1032,54 +1029,33 @@ void debug() {
        //Serial.println(freememory);
        Serial.println("############################### DEBUG ###############################");
        Serial.print("activ:");
-       Serial.println(current_activity);
-       Serial.print("conftelem:");
-       Serial.println(configuration.telemetry);
-       Serial.print("baud");
+       Serial.print(current_activity);
+       Serial.print(" / protocol:");
+       Serial.print(configuration.telemetry);
+       Serial.print(" / baud: ");
        Serial.println(configuration.baudrate);
        Serial.print("lat=");
-       Serial.println(uav_lat/10000000.0,7);
-       Serial.print("lon=");
+       Serial.print(uav_lat/10000000.0,7);
+       Serial.print(" / lon=");
        Serial.println(uav_lon/10000000.0,7);
        Serial.print("alt=");
-       Serial.println(uav_alt);
-       Serial.print("rel_alt=");
-       Serial.println(rel_alt);
-       Serial.print("vel=");
+       Serial.print(uav_alt);
+       Serial.print(" / relative alt=");
+       Serial.print(rel_alt);
+       Serial.print(" / vel=");
        Serial.println(uav_groundspeed);
-       Serial.print("dst=");
-       Serial.println(home_dist);
-       Serial.print("El:");
+       Serial.print("Home distance=");
+       Serial.print(home_dist);
+       Serial.print(" / Elevation:");
        Serial.println(Elevation);
-       Serial.print("Be:");
-       Serial.println(Bearing);
-       Serial.print("H Be:");
+       Serial.print("Bearing:");
+       Serial.print(Bearing);
+       Serial.print(" / Home Bearing:");
        Serial.println(home_bearing);
        Serial.print("uav_fix_type=");
-       Serial.println(uav_fix_type);
-       Serial.print("uav_satellites_visible=");
+       Serial.print(uav_fix_type);
+       Serial.print(" / uav_satellites_visible=");
        Serial.println(uav_satellites_visible);
-       Serial.print("pitch:");
-       Serial.println(uav_pitch);
-       Serial.print("roll:");
-       Serial.println(uav_roll);
-       Serial.print("yaw:");
-       Serial.println(uav_heading);
-       Serial.print("rbat:");
-       Serial.println(uav_bat);
-       Serial.print("amp:");
-       Serial.println(uav_amp);
-       Serial.print("rssi:");
-       Serial.println(uav_rssi);
-       Serial.print("aspeed:");
-       Serial.println(uav_airspeed);
-       Serial.print("armed:");
-       Serial.println(uav_arm);
-       Serial.print("fs:");
-       Serial.println(uav_failsafe);
-       Serial.print("fmode:");
-       Serial.println(uav_flightmode);
-       Serial.print("armfsmode");
-       Serial.println(ltm_armfsmode);
+
 }
 #endif
