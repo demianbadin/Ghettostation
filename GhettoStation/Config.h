@@ -48,6 +48,7 @@
 #define I2CADRESS 0x27 // LCD03/05 have 0x63 or 0xc6 ( even if it's written 0xc6 when powering the lcd03, in fact it uses 0x63 so try booth)
                        // LCM1602 uses 0x27 & GY-LCD use 0x20
                        // OLED_LCD use 0x3d or 0x3d
+                       // 0x3F
 //#################################### SERVOS ENDPOINTS #############################################################
 // NO NEED TO EDIT THIS
 //. Those are just default values when not configured.
